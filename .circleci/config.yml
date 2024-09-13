@@ -1,23 +1,43 @@
 version: 2.1
 orbs:
+  node: circleci/node@6.1.0
   heroku: circleci/heroku@2.0.0
-
 jobs:
-  deploy_review_app:
+  build:
+    docker:
+      - image: cimg/node:22.8.0
+
+    steps:
+      - checkout
+      - restore_cache:
+          key: dependency-cache-{{ checksum "package.json" }}
+      - run:
+          name: Install dependencies
+          command: npm install
+      - save_cache:
+          key: dependency-cache-{{ checksum "package.json" }}
+          paths:
+            - ./node_modules
+      - run:
+          name: Run tests
+          command: npm test
+
+  deploy_app:
     executor: heroku/default
     steps:
       - checkout
       - heroku/install
       - heroku/deploy-via-git:
-          app-name: $HEROKU_APP_NAME
-          heroku-api-key: $HEROKU_API_KEY
+          force: true
+      - run:
+          command: |
+            heroku run npm run migrate --app $HEROKU_APP_NAME
 
 workflows:
   version: 2
-  heroku_deploy:
+  deploy:
     jobs:
-      - deploy_review_app:
-          filters:
-            branches:
-              only:
-                - main
+      - build
+      - deploy_app:
+          requires:
+            - build
