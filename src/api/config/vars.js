@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 export const env = process.env.NODE_ENV;
-export const port = process.env.PORT || 5432;
+export const port = process.env.PORT;
 export const frontend_url = process.env.FRONTEND_URL;
 export const jwtSecret = process.env.JWT_SECRET;
 export const jwtExpirationInterval = process.env.JWT_EXPIRATION_MINUTES;
