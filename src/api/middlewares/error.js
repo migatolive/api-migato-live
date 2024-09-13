@@ -4,9 +4,10 @@ import {env} from '../config/vars.js';
 import {ValidationError} from 'yup';
 
 export const handler = (err, req, res, next) => {
+    const statusCode = err.status || httpStatus.INTERNAL_SERVER_ERROR;
     const response = {
-        code: err.status,
-        message: err.message || httpStatus[err.status],
+        code: statusCode,
+        message: err.message || httpStatus[statusCode],
         errors: err.errors,
         stack: err.stack,
     };
