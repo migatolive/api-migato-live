@@ -33,6 +33,18 @@ jobs:
           command: |
             heroku run npm run migrate --app $HEROKU_APP_NAME
 
+  release:
+    docker:
+      - image: cimg/node:22.8.0
+    steps:
+      - checkout
+      - run:
+          name: Install dependencies
+          command: npm install
+      - run:
+          name: Run semantic-release
+          command: npx semantic-release
+
 workflows:
   version: 2
   deploy:
