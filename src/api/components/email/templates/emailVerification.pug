@@ -1,0 +1,18 @@
+doctype html
+html
+    head
+        title Verificación de correo electrónico
+    body
+        h1 Verificación de correo electrónico
+        p
+            | Está recibiendo esto porque usted (u otra persona) ha solicitado la verificación de su correo electrónico.
+            | Haga clic en el siguiente enlace o péguelo en su navegador para completar el proceso:
+            a(href=verificationLink) Haga clic aquí
+            | Si no solicitó esto, ignore este correo electrónico y su correo electrónico permanecerá sin verificar.
+        p
+            | Si tiene problemas para hacer clic en el botón "Haga clic aquí", copie y pegue la siguiente URL en su navegador web:
+            | #{verificationLink}
+        p
+            | Gracias,
+            br
+            | Equipo Migato
