@@ -1,0 +1,23 @@
+version: 2.1
+orbs:
+  heroku: circleci/heroku@2.0.0
+
+jobs:
+  deploy_review_app:
+    executor: heroku/default
+    steps:
+      - checkout
+      - heroku/install
+      - heroku/deploy-via-git:
+          app-name: $HEROKU_APP_NAME
+          heroku-api-key: $HEROKU_API_KEY
+
+workflows:
+  version: 2
+  heroku_deploy:
+    jobs:
+      - deploy_review_app:
+          filters:
+            branches:
+              only:
+                - tests/test-heroku-orb
