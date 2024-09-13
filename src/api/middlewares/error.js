@@ -1,7 +1,7 @@
 import httpStatus from 'http-status';
 import APIError from '../utils/api-error.js';
-import {env} from '../config/vars.js';
-import {ValidationError} from 'yup';
+import { env } from '../config/vars.js';
+import { ValidationError } from 'yup';
 
 export const handler = (err, req, res, next) => {
     const statusCode = err.status || httpStatus.INTERNAL_SERVER_ERROR;
@@ -16,7 +16,7 @@ export const handler = (err, req, res, next) => {
         delete response.stack;
     }
 
-    res.status(err.status);
+    res.status(statusCode);
     res.json(response);
 };
 
