@@ -8,7 +8,8 @@
     "dev": "nodemon src/api/server.js",
     "lint": "eslint .",
     "format": "prettier --write .",
-    "migrate": "sequelize db:migrate"
+    "migrate": "sequelize db:migrate",
+    "test": "echo \"No tests specified\" && exit 0"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
