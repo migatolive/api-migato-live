@@ -30,8 +30,9 @@ jobs:
       - heroku/deploy-via-git:
           force: true
       - run:
+          name: Run migrations
           command: |
-            heroku run npm run migrate --app $HEROKU_APP_NAME
+            heroku run npm run migrate --app $HEROKU_APP_NAME || { echo 'Migration failed'; exit 1; }
 
   release:
     docker:
