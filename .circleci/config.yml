@@ -87,6 +87,10 @@ workflows:
           context: JIRA_WEBHOOK_URL
           requires:
             - build
+          filters:
+            branches:
+              only:
+                - main
       - release:
           context: JIRA_WEBHOOK_URL
           filters:
