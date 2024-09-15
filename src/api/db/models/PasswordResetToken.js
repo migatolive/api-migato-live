@@ -26,9 +26,9 @@ export const PasswordResetToken = sequelize.define('PasswordResetToken', {
 }, {
     timestamps: true,
     hooks: {
-        beforeCreate: async (passwordResetToken) => {
+        beforeValidate: async (passwordResetToken) => {
             passwordResetToken.token = `${passwordResetToken.userId}.${crypto.randomBytes(20).toString('hex')}`;
-            passwordResetToken.expires = moment().add(24, 'hours');
+            passwordResetToken.expires = moment().add(24, 'hours').toDate();
         },
     },
 });

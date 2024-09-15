@@ -1,6 +1,6 @@
-import {DataTypes} from 'sequelize';
-import {sequelize} from '../../config/database.js';
-import {User} from './User.js';
+import { DataTypes } from 'sequelize';
+import { sequelize } from '../../config/database.js';
+import { User } from './User.js';
 import crypto from 'crypto';
 import moment from 'moment-timezone';
 
@@ -26,9 +26,9 @@ export const RefreshToken = sequelize.define('RefreshToken', {
 }, {
     timestamps: true,
     hooks: {
-        beforeCreate: async (refreshToken) => {
+        beforeValidate: async (refreshToken) => {
             refreshToken.token = `${refreshToken.userId}.${crypto.randomBytes(20).toString('hex')}`;
-            refreshToken.expires = moment().add(30, 'days');
+            refreshToken.expires = moment().add(30, 'days').toDate();
         },
     },
 });
