@@ -24,13 +24,13 @@ class APIError extends ExtendableError {
     isPublic = false,
     errorCode,
   }) {
-    super({
+    super(
       message,
       errors,
       status,
       isPublic,
       stack,
-    });
+    );
     this.errorCode = errorCode;
   }
 }
