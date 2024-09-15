@@ -1,6 +1,7 @@
 version: 2.1
 orbs:
   node: circleci/node@6.1.0
+  jira: circleci/jira@2.1.0
   heroku: circleci/heroku@2.0.0
 jobs:
   build:
@@ -21,6 +22,9 @@ jobs:
       - run:
           name: Run tests
           command: npm test
+      - jira/notify:
+          pipeline_id: << pipeline.id >>
+          pipeline_number: << pipeline.number >>
 
   deploy_app:
     executor: heroku/default
@@ -33,6 +37,12 @@ jobs:
           name: Run migrations
           command: |
             heroku run npm run migrate --app $HEROKU_APP_NAME || { echo 'Migration failed'; exit 1; }
+      - jira/notify:
+          environment: staging
+          environment_type: staging
+          job_type: deployment
+          pipeline_id: << pipeline.id >>
+          pipeline_number: << pipeline.number >>
 
   release:
     docker:
@@ -45,15 +55,36 @@ jobs:
       - run:
           name: Run semantic-release
           command: npx semantic-release
+      - jira/notify:
+          pipeline_id: << pipeline.id >>
+          pipeline_number: << pipeline.number >>
+
+  reviewdog:
+    docker:
+      - image: cimg/node:22.8.0
+    steps:
+      - checkout
+      - run: curl -sfL https://raw.githubusercontent.com/reviewdog/reviewdog/master/install.sh | sh -s -- -b ./bin
+      - run: npm run lint 2>&1 | ./bin/reviewdog -f=eslint -reporter=github-pr-review
 
 workflows:
   version: 2
   deploy:
     jobs:
-      - build
+      - build:
+          context: JIRA_WEBHOOK_URL
+      - reviewdog:
+          requires:
+            - build
       - deploy_app:
+          context: JIRA_WEBHOOK_URL
           requires:
             - build
       - release:
+          context: JIRA_WEBHOOK_URL
+          filter:
+            branches:
+              only:
+                - main
           requires:
             - build
