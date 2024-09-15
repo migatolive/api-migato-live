@@ -148,13 +148,12 @@ export const emailVerification = async (req, res, next) => {
             status: httpStatus.UNAUTHORIZED,
             isPublic: true,
         });
-        if (!emailVerificationToken) {
-            err.message = 'Cannot find matching email verification token';
-            throw err;
-        }
-        if (moment().isAfter(emailVerificationToken.expires)) {
-            err.message = 'Email verification token is expired';
-            throw err;
+        if (!emailVerificationToken || moment().isAfter(emailVerificationToken.expires)) {
+            throw new APIError({
+                status: httpStatus.UNAUTHORIZED,
+                message: emailVerificationToken ? 'Email verification token is expired' : 'Invalid email verification token',
+                isPublic: true,
+            });
         }
 
         const user = await User.findOne({ where: { email } });
