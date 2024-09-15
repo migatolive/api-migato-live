@@ -1,9 +1,11 @@
-import {DataTypes, UniqueConstraintError} from 'sequelize';
+import { DataTypes } from 'sequelize';
 import bcrypt from 'bcryptjs';
 import moment from 'moment-timezone';
 import httpStatus from 'http-status';
 import APIError from '../../utils/api-error.js';
-import {sequelize} from '../../config/database.js';
+import jwt from 'jsonwebtoken';
+import { sequelize } from '../../config/database.js';
+import { jwtExpirationInterval, jwtSecret } from "../../config/vars.js";
 
 const roles = {
     user: 'user',
@@ -43,6 +45,25 @@ export const User = sequelize.define('User', {
     },
 });
 
+User.prototype.transform = function() {
+    const transformed = {};
+    const fields = ['id', 'email', 'role', 'picture', 'createdAt'];
+    fields.forEach((field) => {
+        transformed[field] = this[field];
+    });
+
+    return transformed;
+};
+
+User.prototype.token = function() {
+    const payload = {
+        exp: moment().add(jwtExpirationInterval, 'minutes').unix(),
+        iat: moment().unix(),
+        sub: this.id,
+    };
+    return jwt.sign(payload, jwtSecret);
+};
+
 // find user by email and tries to generate a JWT token
 User.findAndGenerateToken = async function(options) {
     const { email, password, refreshObject } = options;
@@ -72,21 +93,4 @@ User.findAndGenerateToken = async function(options) {
         err.message = 'Incorrect email or refreshToken';
     }
     throw new APIError(err);
-};
-
-User.checkDuplicateEmail = async (error) => {
-    if (error instanceof UniqueConstraintError) {
-        return new APIError({
-            message: 'Validation Error',
-            errors: [{
-                field: 'email',
-                location: 'body',
-                messages: ['"email" already exists'],
-            }],
-            status: httpStatus.CONFLICT,
-            isPublic: true,
-            stack: error.stack,
-        });
-    }
-    return error;
 };
