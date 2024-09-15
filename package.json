@@ -9,7 +9,7 @@
     "lint": "eslint .",
     "format": "prettier --write .",
     "migrate": "npx sequelize db:migrate",
-    "test": "jest",
+    "test": "jest --passWithNoTests",
     "release": "semantic-release"
   },
   "dependencies": {
