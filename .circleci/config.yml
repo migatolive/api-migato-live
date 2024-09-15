@@ -82,7 +82,7 @@ workflows:
             - build
       - release:
           context: JIRA_WEBHOOK_URL
-          filter:
+          filters:
             branches:
               only:
                 - main
