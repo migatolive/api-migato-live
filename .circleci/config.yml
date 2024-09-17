@@ -55,7 +55,7 @@ jobs:
       - run:
           name: Run reviewdog only on pull requests
           command: |
-            if [ "${CIRCLE_PULL_REQUEST##*/}" != ""]; then
+            if [ "${CIRCLE_PULL_REQUEST##*/}" != "" ]; then
                 npm run lint 2>&1 | ./bin/reviewdog -f=eslint -reporter=github-pr-review
             else
                 echo "Not a pull request build. Skipping reviewdog."
