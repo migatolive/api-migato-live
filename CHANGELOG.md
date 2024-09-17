@@ -1,3 +1,15 @@
+## [1.0.1](https://github.com/migatolive/api-migato-live/compare/v1.0.0...v1.0.1) (2024-09-17)
+
+
+### Bug Fixes
+
+* add sequelize error handler and remove empty auth middleware ([c11ed2f](https://github.com/migatolive/api-migato-live/commit/c11ed2f5bfbf068fa5534c97e7f3f00ba78eb832))
+* **circleci:** correct 'filter' to 'filters' in release workflow ([94bcc0d](https://github.com/migatolive/api-migato-live/commit/94bcc0d4307d97d47c4afd95e52091ce7aad5f73))
+* **circleci:** correct 'filter' to 'filters' in release workflow ([c405c23](https://github.com/migatolive/api-migato-live/commit/c405c236781f5f08cbadd573b98a3fe896ab0c8d))
+* **circleci:** remove colon after build ([1c97453](https://github.com/migatolive/api-migato-live/commit/1c97453288981dd26265127e0c31650a21b8027e))
+* **circleci:** run reviewdog only on pull requests ([390a11b](https://github.com/migatolive/api-migato-live/commit/390a11b71d201fb4ab5fbd4fb37b824451f6a7ab))
+* **circleci:** run reviewdog only on pull requests ([78c1b2d](https://github.com/migatolive/api-migato-live/commit/78c1b2deeb3962a7ad146c734e04f25bd3a9fa80))
+
 # 1.0.0 (2024-09-13)
 
 
