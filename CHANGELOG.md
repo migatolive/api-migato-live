@@ -1,3 +1,14 @@
+# [1.1.0](https://github.com/migatolive/api-migato-live/compare/v1.0.4...v1.1.0) (2024-09-17)
+
+
+### Features
+
+* **controllers:** add new book controller ([fd08c20](https://github.com/migatolive/api-migato-live/commit/fd08c20c7b5bd6357c4ccbfaf96346a89f59d0d2)), closes [#26](https://github.com/migatolive/api-migato-live/issues/26)
+* **migrations:** add initial book table migration ([d47ebf1](https://github.com/migatolive/api-migato-live/commit/d47ebf1cd1b61b4618fd6cba3e65d1e933955b58)), closes [#29](https://github.com/migatolive/api-migato-live/issues/29)
+* **models:** add new book model ([beb5b18](https://github.com/migatolive/api-migato-live/commit/beb5b18ddd8ee46ccda7e3f962edbea067710b97)), closes [#28](https://github.com/migatolive/api-migato-live/issues/28)
+* **routes:** add new book routes ([ba03983](https://github.com/migatolive/api-migato-live/commit/ba03983f426cbdd8a44529cd26c2f7ed21713fbc)), closes [#24](https://github.com/migatolive/api-migato-live/issues/24) [#25](https://github.com/migatolive/api-migato-live/issues/25)
+* **validators:** add new book validator ([4b3edfb](https://github.com/migatolive/api-migato-live/commit/4b3edfbab16585fa9157bbcf00d9f219b0244163)), closes [#27](https://github.com/migatolive/api-migato-live/issues/27)
+
 ## [1.0.4](https://github.com/migatolive/api-migato-live/compare/v1.0.3...v1.0.4) (2024-09-17)
 
 
