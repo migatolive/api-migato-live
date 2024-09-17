@@ -14,7 +14,8 @@
           "documentation"
         ],
         "pullrequestTitle": "chore(release): update release <%= nextRelease.version ? `${nextRelease.version}` : '' %>"
-      },
+      }
+    ],
     "@semantic-release/changelog",
     "@semantic-release/npm",
     "@semantic-release/git"
