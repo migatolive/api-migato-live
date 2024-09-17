@@ -1,6 +1,5 @@
 import httpStatus from 'http-status';
 import moment from 'moment-timezone';
-import _ from 'lodash';
 import {User} from '../../../db/models/User.js';
 import {RefreshToken} from '../../../db/models/RefreshToken.js';
 import {PasswordResetToken} from '../../../db/models/PasswordResetToken.js';
@@ -8,8 +7,7 @@ import {EmailVerificationToken} from '../../../db/models/EmailVerificationToken.
 import {jwtExpirationInterval} from '../../../config/vars.js';
 import APIError from '../../../utils/api-error.js';
 import emailService from '../../email/services/email.service.js';
-
-const { omit } = _;
+import { handleSequelizeErrors } from "../../../middlewares/sequelize.js";
 
 // return formated object with tokens
 const generateTokenResponse = (user, accessToken) => {
@@ -24,14 +22,13 @@ const generateTokenResponse = (user, accessToken) => {
 // return jwt token if registration was successful
 export const register = async (req, res, next) => {
     try {
-        const userData = omit(req.body, 'role');
-        const user = await (User.create(userData));
+        const user = await (User.create(req.body));
         const userTransformed = user.transform();
         const token = generateTokenResponse(user, user.token());
         res.status(httpStatus.CREATED);
         return res.json({ token, user: userTransformed });
     } catch (error) {
-        return next(User.checkDuplicateEmail(error));
+        return next(handleSequelizeErrors(error));
     }
 };
 
