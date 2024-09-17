@@ -1,3 +1,11 @@
+## [1.0.4](https://github.com/migatolive/api-migato-live/compare/v1.0.3...v1.0.4) (2024-09-17)
+
+
+### Bug Fixes
+
+* **auth:** improve error handling for email verification token expiration and validation ([ee9370e](https://github.com/migatolive/api-migato-live/commit/ee9370e52d7fd5238a8cc4dde610b102be56df31))
+* **email:** encode email verification token in URL to avoid invalid characters ([16e83ff](https://github.com/migatolive/api-migato-live/commit/16e83ff41e585c1896bbbf792709147d0a64542f))
+
 ## [1.0.3](https://github.com/migatolive/api-migato-live/compare/v1.0.2...v1.0.3) (2024-09-17)
 
 
