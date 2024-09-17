@@ -65,7 +65,7 @@ workflows:
   version: 2
   deploy:
     jobs:
-      - build:
+      - build
       - reviewdog:
           requires:
             - build
