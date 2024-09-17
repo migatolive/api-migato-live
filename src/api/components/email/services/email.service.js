@@ -52,7 +52,7 @@ export const sendVerificationEmail = async (verificationObject) => {
         const { user } = verificationObject;
         const templatePath = path.join(__dirname, '../templates', 'emailVerification.pug');
         const html = pug.renderFile(templatePath, {
-            verificationLink: `${frontend_url}/verify-email?token=${verificationObject.token}`,
+            verificationLink: `${frontend_url}/verify-email?token=${encodeURIComponent(verificationObject.token)}`,
         });
         const mailOptions = {
             to: user.email,
