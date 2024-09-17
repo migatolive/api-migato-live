@@ -26,9 +26,9 @@ export const EmailVerificationToken = sequelize.define('EmailVerificationToken',
 }, {
     timestamps: true,
     hooks: {
-        beforeCreate: async (emailVerificationToken) => {
+        beforeValidate: async (emailVerificationToken) => {
             emailVerificationToken.token = `${emailVerificationToken.userId}.${crypto.randomBytes(20).toString('hex')}`;
-            emailVerificationToken.expires = moment().add(24, 'hours');
+            emailVerificationToken.expires = moment().add(24, 'hours').toDate();
         },
     },
 });
