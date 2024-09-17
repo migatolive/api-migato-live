@@ -1,9 +1,7 @@
 import {Router} from 'express';
 import controller from '../controllers/auth.controller.js';
-import {
-    validate,
-    Schemas
-} from '../validators/auth.validator.js';
+import { Schemas } from '../validators/auth.validator.js';
+import { validate } from "../../../middlewares/sequelize.js";
 
 const router = Router();
 
