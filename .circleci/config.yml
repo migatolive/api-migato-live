@@ -3,6 +3,31 @@ orbs:
   node: circleci/node@6.1.0
   heroku: circleci/heroku@2.0.0
 jobs:
+
+  validate-deploy:
+    executor: node/default
+    steps:
+      - checkout
+      - node/install-packages:
+          pkg-manager: npm
+      - run: npm install bump-cli
+      - when:
+          condition:
+            and:
+              - equal: [ main, << pipeline.git.branch >> ]
+          steps:
+            - deploy:
+                name: Deploy bump documentation
+                command: npm exec -- bump deploy bump.openapi.v3.yml
+      - unless:
+          condition:
+            and:
+              - equal: [ main, << pipeline.git.branch >> ]
+          steps:
+            - run:
+                name: Validate documentation
+                command: npm exec -- bump deploy --dry-run bump.openapi.v3.yml  
+
   build:
     docker:
       - image: cimg/node:22.8.0
@@ -46,29 +71,11 @@ jobs:
           name: Run semantic-release
           command: npx semantic-release
 
-  reviewdog:
-    docker:
-      - image: cimg/node:22.8.0
-    steps:
-      - checkout
-      - run: curl -sfL https://raw.githubusercontent.com/reviewdog/reviewdog/master/install.sh | sh -s -- -b ./bin
-      - run:
-          name: Run reviewdog only on pull requests
-          command: |
-            if [ "${CIRCLE_PULL_REQUEST##*/}" != "" ]; then
-                npm run lint 2>&1 | ./bin/reviewdog -f=eslint -reporter=github-pr-review
-            else
-                echo "Not a pull request build. Skipping reviewdog."
-            fi
-
 workflows:
   version: 2
   deploy:
     jobs:
       - build
-      - reviewdog:
-          requires:
-            - build
       - deploy_app:
           requires:
             - build
@@ -82,4 +89,11 @@ workflows:
               only:
                 - main
           requires:
-            - build
+            - build   
+  bumpworkflow:
+    jobs:
+      - validate-deploy:
+          filters:
+            branches:
+              only:
+                - main
