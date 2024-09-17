@@ -1,3 +1,10 @@
+## [1.0.3](https://github.com/migatolive/api-migato-live/compare/v1.0.2...v1.0.3) (2024-09-17)
+
+
+### Bug Fixes
+
+* **token:** update hooks from beforeCreate to beforeValidate and fix date validation ([1a3dbec](https://github.com/migatolive/api-migato-live/commit/1a3dbec010fb2d0a04d8e565a11c8ce12deee6ad))
+
 ## [1.0.2](https://github.com/migatolive/api-migato-live/compare/v1.0.1...v1.0.2) (2024-09-17)
 
 
