@@ -1,7 +1,6 @@
 version: 2.1
 orbs:
   node: circleci/node@6.1.0
-  jira: circleci/jira@2.1.0
   heroku: circleci/heroku@2.0.0
 jobs:
   build:
@@ -22,9 +21,6 @@ jobs:
       - run:
           name: Run tests
           command: npm test
-      - jira/notify:
-          pipeline_id: << pipeline.id >>
-          pipeline_number: << pipeline.number >>
 
   deploy_app:
     executor: heroku/default
@@ -37,12 +33,6 @@ jobs:
           name: Run migrations
           command: |
             heroku run npm run migrate --app $HEROKU_APP_NAME || { echo 'Migration failed'; exit 1; }
-      - jira/notify:
-          environment: staging
-          environment_type: staging
-          job_type: deployment
-          pipeline_id: << pipeline.id >>
-          pipeline_number: << pipeline.number >>
 
   release:
     docker:
@@ -55,9 +45,6 @@ jobs:
       - run:
           name: Run semantic-release
           command: npx semantic-release
-      - jira/notify:
-          pipeline_id: << pipeline.id >>
-          pipeline_number: << pipeline.number >>
 
   reviewdog:
     docker:
@@ -79,12 +66,10 @@ workflows:
   deploy:
     jobs:
       - build:
-          context: JIRA_WEBHOOK_URL
       - reviewdog:
           requires:
             - build
       - deploy_app:
-          context: JIRA_WEBHOOK_URL
           requires:
             - build
           filters:
@@ -92,7 +77,6 @@ workflows:
               only:
                 - main
       - release:
-          context: JIRA_WEBHOOK_URL
           filters:
             branches:
               only:
