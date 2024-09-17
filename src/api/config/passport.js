@@ -7,7 +7,7 @@ const opts = {
     secretOrKey: jwtSecret,
 };
 
-const jwt = new JwtStrategy(opts, async (jwt_payload, done) => {
+export const jwt = new JwtStrategy(opts, async (jwt_payload, done) => {
     try {
         const user = await User.findByPk(jwt_payload.id);
         if (user) {
@@ -18,7 +18,3 @@ const jwt = new JwtStrategy(opts, async (jwt_payload, done) => {
         return done(error, false);
     }
 });
-
-export default {
-    jwt,
-};

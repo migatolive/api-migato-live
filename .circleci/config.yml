@@ -30,8 +30,9 @@ jobs:
       - heroku/deploy-via-git:
           force: true
       - run:
+          name: Run migrations
           command: |
-            heroku run npm run migrate --app $HEROKU_APP_NAME
+            heroku run npm run migrate --app $HEROKU_APP_NAME || { echo 'Migration failed'; exit 1; }
 
   release:
     docker:
@@ -45,14 +46,40 @@ jobs:
           name: Run semantic-release
           command: npx semantic-release
 
+  reviewdog:
+    docker:
+      - image: cimg/node:22.8.0
+    steps:
+      - checkout
+      - run: curl -sfL https://raw.githubusercontent.com/reviewdog/reviewdog/master/install.sh | sh -s -- -b ./bin
+      - run:
+          name: Run reviewdog only on pull requests
+          command: |
+            if [ "${CIRCLE_PULL_REQUEST##*/}" != ""]; then
+                npm run lint 2>&1 | ./bin/reviewdog -f=eslint -reporter=github-pr-review
+            else
+                echo "Not a pull request build. Skipping reviewdog."
+            fi
+
 workflows:
   version: 2
   deploy:
     jobs:
       - build
+      - reviewdog:
+          requires:
+            - build
       - deploy_app:
           requires:
             - build
+          filters:
+            branches:
+              only:
+                - main
       - release:
+          filters:
+            branches:
+              only:
+                - main
           requires:
             - build
