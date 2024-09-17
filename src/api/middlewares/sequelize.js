@@ -18,3 +18,22 @@ export const handleSequelizeErrors = (error) => {
     }
     return error;
 };
+
+export const validate = (schema) => async (req, res, next) => {
+    try {
+        const data = await schema.validate(req.body, { abortEarly: false });
+        console.log('Validation successful:', data);
+        next();
+    } catch (error) {
+        console.error('Validation error:', error);
+        const apiError = new APIError({
+            message: 'Validation error',
+            status: 422,
+            isPublic: true,
+            stack: error.stack,
+            errorCode: 'validation_error',
+            errors: error.errors
+        });
+        next(apiError);
+    }
+};
