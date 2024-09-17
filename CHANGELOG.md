@@ -1,3 +1,10 @@
+## [1.0.2](https://github.com/migatolive/api-migato-live/compare/v1.0.1...v1.0.2) (2024-09-17)
+
+
+### Bug Fixes
+
+* **circleci:** correct unary operator error in reviewdog script ([534df1d](https://github.com/migatolive/api-migato-live/commit/534df1d9c79db8bfb013b86aaec869744cdfcade))
+
 ## [1.0.1](https://github.com/migatolive/api-migato-live/compare/v1.0.0...v1.0.1) (2024-09-17)
 
 
