@@ -96,6 +96,10 @@ User.getByEmail = async function(email) {
 // Exportar roles también
 User.roles = roles;
 
+User.prototype.passwordMatches = async function(password) {
+    return bcrypt.compare(password, this.password);
+};
+
 // find user by email and tries to generate a JWT token
 User.findAndGenerateToken = async function(options) {
     const { email, password, refreshObject } = options;
@@ -116,7 +120,7 @@ User.findAndGenerateToken = async function(options) {
         }
         err.message = 'Incorrect email or password';
     } else if (refreshObject && refreshObject.userEmail === email) {
-        if (moment(refreshObject.expires).isBefore()) {
+        if (moment(refreshObject.expires).isBefore(moment())) {
             err.message = 'Invalid refresh token.';
         } else {
             return { user, accessToken: user.token() };
