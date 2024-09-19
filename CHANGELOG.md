@@ -1,3 +1,13 @@
+# [1.2.0](https://github.com/migatolive/api-migato-live/compare/v1.1.0...v1.2.0) (2024-09-19)
+
+
+### Features
+
+* **controllers:** add user controller ([d19a82a](https://github.com/migatolive/api-migato-live/commit/d19a82a0518630771757e8e482efa84329d2d3f3))
+* **middlewares:** add new auth middleware ([41befb2](https://github.com/migatolive/api-migato-live/commit/41befb234fcc004e60e887d054247f378e6d353a))
+* **models:** add get function to the User Model and export user roles ([886ef44](https://github.com/migatolive/api-migato-live/commit/886ef44b551e86c511291a0eff4e38f9207f22dd))
+* **routes:** add userRoutes ([77f8626](https://github.com/migatolive/api-migato-live/commit/77f862617731abb9a43dfa1495f7851e3094a70f))
+
 # [1.1.0](https://github.com/migatolive/api-migato-live/compare/v1.0.4...v1.1.0) (2024-09-17)
 
 
