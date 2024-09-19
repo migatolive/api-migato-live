@@ -42,6 +42,11 @@ export const User = sequelize.define('User', {
         beforeCreate: async (user) => {
             user.password = await bcrypt.hash(user.password, 10);
         },
+        beforeUpdate: async (user) => {
+            if (user.changed('password')) {
+                user.password = await bcrypt.hash(user.password, 10);
+            }
+        },
     },
 });
 
@@ -64,6 +69,37 @@ User.prototype.token = function() {
     return jwt.sign(payload, jwtSecret);
 };
 
+// Obtener usuario por ID
+User.get = async function(id) {
+    const user = await this.findByPk(id);
+    if (!user) {
+        throw new APIError({
+            status: httpStatus.NOT_FOUND,
+            message: 'User does not exist',
+        });
+    }
+    return user;
+};
+
+// Obtener usuario por email
+User.getByEmail = async function(email) {
+    const user = await this.findOne({ where: { email } });
+    if (!user) {
+        throw new APIError({
+            status: httpStatus.NOT_FOUND,
+            message: 'User does not exist',
+        });
+    }
+    return user;
+};
+
+// Exportar roles también
+User.roles = roles;
+
+User.prototype.passwordMatches = async function(password) {
+    return bcrypt.compare(password, this.password);
+};
+
 // find user by email and tries to generate a JWT token
 User.findAndGenerateToken = async function(options) {
     const { email, password, refreshObject } = options;
@@ -84,7 +120,7 @@ User.findAndGenerateToken = async function(options) {
         }
         err.message = 'Incorrect email or password';
     } else if (refreshObject && refreshObject.userEmail === email) {
-        if (moment(refreshObject.expires).isBefore()) {
+        if (moment(refreshObject.expires).isBefore(moment())) {
             err.message = 'Invalid refresh token.';
         } else {
             return { user, accessToken: user.token() };
