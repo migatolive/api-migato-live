@@ -64,6 +64,33 @@ User.prototype.token = function() {
     return jwt.sign(payload, jwtSecret);
 };
 
+// Obtener usuario por ID
+User.get = async function(id) {
+    const user = await this.findByPk(id);
+    if (!user) {
+        throw new APIError({
+            status: httpStatus.NOT_FOUND,
+            message: 'User does not exist',
+        });
+    }
+    return user;
+};
+
+// Obtener usuario por email
+User.getByEmail = async function(email) {
+    const user = await this.findOne({ where: { email } });
+    if (!user) {
+        throw new APIError({
+            status: httpStatus.NOT_FOUND,
+            message: 'User does not exist',
+        });
+    }
+    return user;
+};
+
+// Exportar roles también
+User.roles = roles;
+
 // find user by email and tries to generate a JWT token
 User.findAndGenerateToken = async function(options) {
     const { email, password, refreshObject } = options;
