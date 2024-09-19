@@ -42,6 +42,11 @@ export const User = sequelize.define('User', {
         beforeCreate: async (user) => {
             user.password = await bcrypt.hash(user.password, 10);
         },
+        beforeUpdate: async (user) => {
+            if (user.changed('password')) {
+                user.password = await bcrypt.hash(user.password, 10);
+            }
+        },
     },
 });
 
