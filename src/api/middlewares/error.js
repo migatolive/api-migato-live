@@ -1,4 +1,4 @@
-import { ValidationError } from 'sequelize';
+import {ValidationError} from 'sequelize';
 import httpStatus from "http-status";
 import APIError from '../utils/api-error.js';
 
@@ -59,8 +59,11 @@ export function errorHandler(err, req, res, next) {
         code: err.status,
         message: err.message || httpStatus[err.status],
         errors: err.errors,
-        stack: err.stack,
     };
+
+    if (process.env.NODE_ENV === 'development') {
+        response.stack = err.stack;
+    }
 
     res.status(err.status);
     res.json(response);
