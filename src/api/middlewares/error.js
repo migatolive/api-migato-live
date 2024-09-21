@@ -1,5 +1,6 @@
-import { ValidationError } from 'sequelize';
+import {ValidationError} from 'sequelize';
 import httpStatus from "http-status";
+import {JsonWebTokenError} from 'jsonwebtoken';
 import APIError from '../utils/api-error.js';
 
 // Error converter
@@ -30,6 +31,13 @@ export function errorConverter(err, req, res, next) {
                     messages: [`"${e.value}" already exists`],
                 })),
                 status: httpStatus.CONFLICT, // 409 Conflict
+                isPublic: true,
+            });
+        } else if (err instanceof JsonWebTokenError){
+            // JWT Malformed, JWT Expired, JWT Invalid, JWT Signature
+            convertedError = new APIError({
+                message: 'Invalid Token: JWT is malformed or invalid',
+                status: httpStatus.UNAUTHORIZED, // 401 Unauthorized
                 isPublic: true,
             });
         } else {
