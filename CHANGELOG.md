@@ -1,3 +1,10 @@
+## [1.2.1](https://github.com/migatolive/api-migato-live/compare/v1.2.0...v1.2.1) (2024-09-21)
+
+
+### Bug Fixes
+
+* **middleware:** hide error stack trace in production environment ([e0ba3c0](https://github.com/migatolive/api-migato-live/commit/e0ba3c08adf776f85a7a49f8c779f76fd3859773))
+
 # [1.2.0](https://github.com/migatolive/api-migato-live/compare/v1.1.0...v1.2.0) (2024-09-19)
 
 
