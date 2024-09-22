@@ -16,6 +16,14 @@ export const up = async ({ context: queryInterface }) => {
             },
             allowNull: false,
         },
+        userEmail: {
+            type: DataTypes.STRING,
+            references: {
+                model: 'Users',
+                key: 'email',
+            },
+            allowNull: false,
+        },
         expires: {
             type: DataTypes.DATE,
             allowNull: false,
