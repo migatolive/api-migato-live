@@ -1,6 +1,6 @@
-import { DataTypes } from 'sequelize';
-import { sequelize } from '../../config/database.js';
-import { User } from './User.js';
+import {DataTypes} from 'sequelize';
+import {sequelize} from '../../config/database.js';
+import {User} from './User.js';
 import crypto from 'crypto';
 import moment from 'moment-timezone';
 
@@ -16,6 +16,14 @@ export const RefreshToken = sequelize.define('RefreshToken', {
         references: {
             model: User,
             key: 'id',
+        },
+        allowNull: false,
+    },
+    userEmail: {
+        type: DataTypes.STRING,
+        references: {
+            model: User,
+            key: 'email',
         },
         allowNull: false,
     },
@@ -37,11 +45,12 @@ RefreshToken.belongsTo(User, { foreignKey: 'userId' });
 
 RefreshToken.generate = async function(user) {
     const userId = user.id;
+    const userEmail = user.email;
     const existingRefreshToken = await RefreshToken.findOne({ where: { userId } });
 
     if (existingRefreshToken) {
         await RefreshToken.destroy({ where: { userId } });
     }
 
-    return await RefreshToken.create({ userId });
+    return await RefreshToken.create({ userId, userEmail });
 };
