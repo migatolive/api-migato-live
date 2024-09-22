@@ -1,9 +1,13 @@
 import nodemailer from 'nodemailer';
 import pug from 'pug';
 import path from 'path';
+import {fileURLToPath} from 'url';
 import httpStatus from "http-status";
 import APIError from '../../../utils/api-error.js';
 import {frontend_url, mailgun} from '../../../config/vars.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const transporter = nodemailer.createTransport({
     service: 'Mailgun',
@@ -23,9 +27,8 @@ transporter.verify((error) => {
     }
 });
 
-export const sendPasswordReset = async (passwordResetObject) => {
+export const sendPasswordReset = async (passwordResetObject, user) => {
     try {
-        const { user } = passwordResetObject;
         const templatePath = path.join(__dirname, '../templates', 'passwordReset.pug');
         const html = pug.renderFile(templatePath, {
             resetLink: `${frontend_url}/reset-password?token=${passwordResetObject.token}`,
@@ -47,9 +50,8 @@ export const sendPasswordReset = async (passwordResetObject) => {
     }
 };
 
-export const sendVerificationEmail = async (verificationObject) => {
+export const sendVerificationEmail = async (verificationObject, user) => {
     try {
-        const { user } = verificationObject;
         const templatePath = path.join(__dirname, '../templates', 'emailVerification.pug');
         const html = pug.renderFile(templatePath, {
             verificationLink: `${frontend_url}/verify-email?token=${encodeURIComponent(verificationObject.token)}`,

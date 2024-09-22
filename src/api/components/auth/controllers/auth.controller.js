@@ -69,7 +69,7 @@ export const sendPasswordReset = async (req, res, next) => {
 
         if (user) {
             const passwordResetObj = await PasswordResetToken.generate(user);
-            await emailService.sendPasswordReset(passwordResetObj);
+            await emailService.sendPasswordReset(passwordResetObj, user);
             res.status(httpStatus.OK);
             return res.json({message: 'Password reset email sent'});
         }
@@ -123,7 +123,7 @@ export const sendEmailVerification = async (req, res, next) => {
         const user = await User.findOne({ where: { email } });
         if (user) {
             const emailVerificationToken = await EmailVerificationToken.generate(user);
-            await emailService.sendVerificationEmail(emailVerificationToken);
+            await emailService.sendVerificationEmail(emailVerificationToken, user);
             res.status(httpStatus.OK);
             return res.json({ message: 'Email verification sent' });
         }
