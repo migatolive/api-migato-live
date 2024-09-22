@@ -1,3 +1,15 @@
+# [1.3.0](https://github.com/migatolive/api-migato-live/compare/v1.2.1...v1.3.0) (2024-09-22)
+
+
+### Bug Fixes
+
+* **auth:** ensure async handling in token generation ([c8c6f9c](https://github.com/migatolive/api-migato-live/commit/c8c6f9c16f356a959f021d22be85e88f03157cc8))
+
+
+### Features
+
+* **db:** add userEmail to RefreshToken model and migration ([95ea98f](https://github.com/migatolive/api-migato-live/commit/95ea98f273eca8968effb3a75efe51ece1a37abf))
+
 ## [1.2.1](https://github.com/migatolive/api-migato-live/compare/v1.2.0...v1.2.1) (2024-09-21)
 
 
