@@ -7,12 +7,13 @@ import {EmailVerificationToken} from '../../../db/models/EmailVerificationToken.
 import {jwtExpirationInterval} from '../../../config/vars.js';
 import APIError from '../../../utils/api-error.js';
 import emailService from '../../email/services/email.service.js';
-import { handleSequelizeErrors } from "../../../middlewares/sequelize.js";
+import {handleSequelizeErrors} from "../../../middlewares/sequelize.js";
 
 // return formated object with tokens
-const generateTokenResponse = (user, accessToken) => {
+const generateTokenResponse = async (user, accessToken) => {
     const tokenType = 'Bearer';
-    const refreshToken = RefreshToken.generate(user).token;
+    const refreshTokenInstance = await RefreshToken.generate(user);
+    const refreshToken = refreshTokenInstance.token;
     const expiresIn = moment().add(jwtExpirationInterval, 'minutes');
     return {
         tokenType, accessToken, refreshToken, expiresIn,
@@ -24,7 +25,7 @@ export const register = async (req, res, next) => {
     try {
         const user = await (User.create(req.body));
         const userTransformed = user.transform();
-        const token = generateTokenResponse(user, user.token());
+        const token = await generateTokenResponse(user, user.token());
         res.status(httpStatus.CREATED);
         return res.json({ token, user: userTransformed });
     } catch (error) {
@@ -36,7 +37,7 @@ export const register = async (req, res, next) => {
 export const login = async (req, res, next) => {
     try {
         const { user, accessToken } = await User.findAndGenerateToken(req.body);
-        const token = generateTokenResponse(user, accessToken);
+        const token = await generateTokenResponse(user, accessToken);
         const userTransformed = user.transform();
         return res.json({ token, user: userTransformed });
     } catch (error) {
@@ -53,7 +54,7 @@ export const refresh = async (req, res, next) => {
             await refreshObject.destroy();
         }
         const { user, accessToken } = await User.findAndGenerateToken({ email, refreshObject });
-        const response = generateTokenResponse(user, accessToken);
+        const response = await generateTokenResponse(user, accessToken);
         return res.json(response);
     } catch (error) {
         return next(error);
