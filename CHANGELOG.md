@@ -1,3 +1,15 @@
+# [1.4.0](https://github.com/migatolive/api-migato-live/compare/v1.3.0...v1.4.0) (2024-09-22)
+
+
+### Bug Fixes
+
+* **auth:** pass user object to email service methods ([c5a4df3](https://github.com/migatolive/api-migato-live/commit/c5a4df32038a53c426f730f3fc2e6b07064803a8))
+
+
+### Features
+
+* **email:** add user parameter to email service functions ([24c65cb](https://github.com/migatolive/api-migato-live/commit/24c65cbf87ebde0a40d5d7455e9f8e9777956fd8))
+
 # [1.3.0](https://github.com/migatolive/api-migato-live/compare/v1.2.1...v1.3.0) (2024-09-22)
 
 
